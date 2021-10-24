@@ -22,7 +22,7 @@ function Ball:update(dt)
     end
 
     if self.x_up then
-        BALL_X_SPEED = BALL_X_SPEED + -
+        BALL_X_SPEED = BALL_X_SPEED + 50
         BALL_Y_SPEED = BALL_Y_SPEED + math.random(20)
         self.x_up = false
     end

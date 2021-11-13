@@ -43,18 +43,12 @@ end
 
 function Pad:get_y_resize_paddle_sprite_factor()
     y_factor = self.super.get_width(self) / self.pad_sprite_width
-    print(self.super.get_width(self))
-    print(self.pad_sprite_width)
-    print("y factor:" .. y_factor)
     return y_factor
 end
 
 function Pad:get_x_resize_paddle_sprite_factor()
 
     x_factor = self.super.get_height(self) / self.pad_sprite_height
-    print(self.super.get_height(self))
-    print(self.pad_sprite_height)
-    print("x factor:" .. x_factor)
     return x_factor
 end
 

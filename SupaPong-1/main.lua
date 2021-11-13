@@ -12,15 +12,18 @@ GAME_STATE = 0
 --0 -> ball at center
 --1 -> ball moving
 
-
 function love.load()
     FIELD = Field(FIELD_SHAPES)
+    PAUSED=False
 end
 
 function love.update(dt)
-    PLAYER1:update(dt)
-    PLAYER2:update(dt)
-    BALL:update(dt)
+    if love.keyboard.isDown('p') then PAUSED = not PAUSED end
+    if not PAUSED then
+        PLAYER1:update(dt)
+        PLAYER2:update(dt)
+        BALL:update(dt)
+    end
 end
 
 

@@ -3,6 +3,7 @@ require "objects.Shape"
 Ball = Shape:extend()
 
 
+
 function Ball:new(x, y, radius, color, fill_mode)
 
     Ball.super.new(self, x, y)
@@ -16,6 +17,10 @@ function Ball:new(x, y, radius, color, fill_mode)
     self.speed_x = 0
     self.speed_y = 0
 
+end
+
+function change_kick_off_player()
+    if KICK_OFF_PLAYER_ID == 1 then KICK_OFF_PLAYER_ID = 2 else KICK_OFF_PLAYER_ID = 1 end
 end
 
 function Ball:compute_velocity(pos2, pos1, dt)
@@ -38,19 +43,19 @@ function Ball:no_overflow_reset_position(dt, side, next_x, next_y)
 
     if side == "L" then
         if self:is_coliding_with_on_y(next_y, PLAYER1) then
-            print("RESETTING from "..self.x.." to "..PAD_WIDTH.." BECAUSE collision with PLAYER1 detected")
+            print("RESETTING from "..self.x.." to "..PAD_WIDTH +1 .." BECAUSE collision with PLAYER1 detected")
             self.x = PAD_WIDTH + 1
             return
         end
     elseif side == "R" then
         if self:is_coliding_with_on_y(next_y, PLAYER2) then
-            print("RESETTING from "..self.x.." to "..SCREEN_WIDTH - PAD_WIDTH.." BECAUSE collision with PLAYER1 detected")
-            self.x = SCREEN_WIDTH - PAD_WIDTH
+            print("RESETTING from "..self.x.." to "..SCREEN_WIDTH - PAD_WIDTH -1 .." BECAUSE collision with PLAYER2 detected")
+            self.x = SCREEN_WIDTH - PAD_WIDTH - 1
             return
         end
     end
 
-    GAME_STATE = 0
+    --GAME_STATE = 0
 
 
 end
@@ -58,6 +63,7 @@ end
 function Ball:update(dt)
 
     print("velocity x: "..self.speed_x.."x: "..self.x..", y: "..self.y)
+
     if GAME_STATE == 0 then
         self.ball_x_dir = - self.ball_x_dir --Change ball direction @each point
         self.x = SCREEN_WIDTH / 2
@@ -72,11 +78,10 @@ function Ball:update(dt)
         self.speed_x = BALL_X_SPEED
         self.speed_y = BALL_Y_SPEED
         self.x = self.x + self.speed_x * dt * self.ball_x_dir
-        --self.y = self.y + self.speed_y * dt * self.ball_y_dir
+        self.y = self.y + self.speed_y * dt * self.ball_y_dir
     end
 
     if self.speed_up then
-
         if BALL_X_SPEED < 6000 then
             BALL_X_SPEED = BALL_X_SPEED + 30
         end
@@ -100,7 +105,6 @@ function Ball:update(dt)
         self.ball_x_dir = self.ball_x_dir * -1
         self.x = self.x + BALL_RADIUS
         self.speed_up = true
-        print("PLAYER1" .. " colision")
         self.iter_nb=0
     end
 
@@ -108,14 +112,12 @@ function Ball:update(dt)
         self.ball_x_dir = self.ball_x_dir * -1
         self.x = self.x - BALL_RADIUS
         self.speed_up = true
-        print("PLAYER2" .. " colision")
         self.iter_nb=0
     end
 
 
     for i, shape in ipairs(FIELD_SHAPES) do
         if Ball:is_coliding_with(self, shape.item) then
-            print("collision" .. i)
             if shape.dir=="hor" then
                 if self.y < 15 + BALL_RADIUS then
                     self.y = 15 + BALL_RADIUS
@@ -133,14 +135,14 @@ function Ball:update(dt)
 
     if self.x > SCREEN_WIDTH or self.x < 0 then  --Point
             self.ball_x_dir = self.ball_x_dir * -1
-
             self.x = SCREEN_WIDTH / 2
             self.y = SCREEN_HEIGHT / 2
             self.speed_x = 0
             self.speed_y = 0
             GAME_STATE = 0
+            change_kick_off_player()
 
-            --os.exit()
+
     end
 
     self.x_previous = self.x

@@ -9,6 +9,7 @@ PLAYER1 = Player(1, 1, "OrelSan")
 PLAYER2 = Player(2, 2, "Hajime Isayama")
 BALL = Ball(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, BALL_RADIUS, {red=0, green=1, blue=0}, "fill")
 GAME_STATE = 0
+KICK_OFF_PLAYER_ID = PLAYER1.player_id
 --0 -> ball at center
 --1 -> ball moving
 
